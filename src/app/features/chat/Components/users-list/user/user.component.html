@@ -1,7 +1,7 @@
 <div class="flex items-center space-x-3 py-3">
-  <img class="w-12 h-12 rounded-xl" src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg">
+  <img class="w-12 h-12 rounded-xl" src="{{user?.profile?.imgUrl}} ?? https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg">
   <div class="flex flex-col">
-    <div class=" text-md font-normal ">Andrew Alfred</div>
+    <div class=" text-md font-normal ">{{user?.profile?.bio}} {{user?.profile?.lastName}} {{user?.username}}</div>
     <span class="text-[#6e7378] text-xs font-semibold">Hello</span>
   </div>
 </div>
