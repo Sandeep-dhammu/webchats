@@ -1,0 +1,14 @@
+<div class="form-group bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" [ngClass]="radius?'radius':''" [ngClass]="{'b-red' :control?.['touched'] && control?.['invalid']  }">
+  <div class="f-prefix">
+    <ng-content  select=".f-prefix"></ng-content>
+  </div>
+  <div class="form-control-wapper pl-2"  >
+    <ng-content select=".f-control"></ng-content>
+  </div>
+  <div class="form-append">
+    <ng-content select=".f-append"></ng-content>
+  </div>
+</div>
+<div class="text-xs text-red-500" *ngIf="control?.['touched'] && control?.['invalid']">
+  {{ error }}
+</div>

@@ -1,0 +1,52 @@
+<div class="flex justify-center">
+  <div class="w-full bg-white rounded-xl shadow  md:mt-0 sm:max-w-md xl:p-0 ">
+    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+            Create your new account
+        </h1>
+        <form [formGroup]="form" class="space-y-4 md:space-y-6" >
+            <div>
+                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900 ">Username </label>
+                <form-field class="auth" [errorControl]="form.get('username')" name="Username">
+                    <!-- <div class="f-prefix align-center material-symbols-outlined ">person</div> -->
+                    <img src="../../../../../assets/images/user.svg" alt="" class="f-prefix w-5 h-5">
+                     <input type="text" formControlName="username" placeholder="username" name="username" class="f-control" autocomplete="off">
+                  </form-field>
+            </div>
+            <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                <form-field class="auth" [errorControl]="form.get('email')" name="Email">
+                  <!-- <div class="f-prefix align-center material-symbols-outlined ">mail</div> -->
+                  <img src="../../../../../assets/images/at-the-rate-icon.svg" alt="" class="f-prefix w-5 h-5">
+                  <input type="email" formControlName="email" placeholder="name@email.com" class="f-control" autocomplete="off">
+                </form-field>
+              </div>
+              <div>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                <form-field class="auth" [errorControl]="form.get('password')" name="Password">
+                  <!-- <div class="f-prefix align-center material-symbols-outlined ">lock</div> -->
+                  <img src="../../../../../assets/images/lock.svg" alt="" class="f-prefix w-5 h-5">
+                  <input #password type="password" formControlName="password" placeholder="••••••••" class="f-control" autocomplete="off">
+                  <img *ngIf="password.type == 'password'" (click)="password.type = 'text'" src="../../../../../assets/images/eye-open.svg" alt="" class="f-append w-5 h-5">
+                  <img *ngIf="password.type == 'text'" (click)="password.type = 'password'" src="../../../../../assets/images/eye-close.svg" alt="" class="f-append w-5 h-5">
+                </form-field>
+              </div>
+              <div>
+                <label for="confirm password" class="block mb-2 text-sm font-medium text-gray-900 ">Confirm Password</label>
+                <form-field class="auth" [errorControl]="form.get('cPassword')" name="Confirm Password">
+                  <!-- <div class="f-prefix align-center material-symbols-outlined ">lock</div> -->
+                  <img src="../../../../../assets/images/lock.svg" alt="" class="f-prefix w-5 h-5">
+                  <input #cPassword type="password" formControlName="cPassword" placeholder="••••••••" class="f-control" autocomplete="off">
+                  <img *ngIf="cPassword.type === 'password'" (click)="cPassword.type = 'text'" src="../../../../../assets/images/eye-open.svg" alt="" class="f-append w-5 h-5">
+                  <img *ngIf="cPassword.type === 'text'" (click)="cPassword.type = 'password'" src="../../../../../assets/images/eye-close.svg" alt="" class="f-append w-5 h-5">
+                </form-field>
+            </div>
+          
+            <button (click)="userSignUp()" type="button" class="w-full text-white bg-black font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Sign Up</button>
+            <p class="text-sm font-light text-gray-500 text-center">
+              Already have an account? <a routerLink="../sign-in" class="font-medium text-primary-600 hover:underline ">Sign In</a>
+            </p>
+        </form>
+    </div>
+  </div>
+</div>

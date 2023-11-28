@@ -1,0 +1,80 @@
+:host {
+    display: block;
+    // margin-bottom: 18px;
+    margin-top: 2px;
+    &.search{
+      .form-group{
+        background: #F7F4F6 !important;
+        border: 1px solid #E8DEE6 !important;
+        border-radius: 10px !important;
+      }
+    }
+    &.auth{ 
+      .error  {
+        color: rgb(0, 0, 0);
+        text-align: left;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+    .form-group {
+      display: flex;
+      width: 100%;
+    //   border: 1px solid #F3DDE5 !important;
+    //   padding: 4px 4px 4px 10px ;
+    //   border-radius: 10px;
+    //   align-items: center;
+      margin-bottom: 7px;
+    //   background-color:#fff;
+      position: relative;
+      &.b-red{
+        border: 2px solid red !important;
+        // box-shadow: rgba(255, 0, 0, 0.25) 0px 6px 12px -2px, rgba(255, 0, 0, 0.3) 0px 3px 7px -3px;
+      }
+      
+      &.radius {
+        border-radius: 30px;
+        padding: 10px 10px;
+      }
+  
+      .form-control-wapper {
+        flex: 1;
+      }
+  
+      .f-prefix,
+      .f-append {
+        display: flex;
+        align-items: center;
+  
+        img {
+          padding-right: 0.5rem;
+          vertical-align: middle;
+        }
+      }
+    }
+  
+  }
+  
+  :host ::ng-deep {
+  
+    input,
+    textarea {
+      border: none;
+      outline: none;
+      width: 100%;
+      // padding: 5px 10px;
+    //   height: 25px;
+      // font-family: "Gotham", sans-serif !important;
+      font-family: "Montserrat", sans-serif !important;
+  
+      background-color: transparent;
+      resize: none;
+    }
+  
+    textarea {
+      height: auto !important;
+    }
+  }
+  .b-red{
+    border: 2px solid red;
+  }

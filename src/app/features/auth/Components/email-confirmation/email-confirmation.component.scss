@@ -1,0 +1,30 @@
+/* verification-loading-overlay.component.scss */
+
+.loading-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  
+    .loading-spinner {
+      border: 3px solid #f3f3f3; /* Light gray border */
+      border-top: 3px solid #000000; /* Blue border for the spinning effect */
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+      animation: spin 1s linear infinite; /* Animation for the spinning effect */
+    }
+  
+    p {
+      font-size: 16px;
+      color: #fff; /* Text color */
+    }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
