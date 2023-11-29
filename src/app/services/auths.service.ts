@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthsService {
-  auths = new GenericApi('auths', this._http);
+  private auths = new GenericApi('auths', this._http);
   constructor(private _http:HttpClient) {}
   
   async signUp(body:Object){

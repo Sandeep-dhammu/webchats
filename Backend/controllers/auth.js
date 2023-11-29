@@ -40,11 +40,18 @@ export const signUp = async (req, res) => {
     };
 
     if (user && user.status == "pending") {
-      user.save();
+      user.set(document);
+     await user.save();
     } else {
       user = await User.create(document);
     }
 
+    // if (user && user.status == "pending") {
+    //   user.set(document)
+    //   await user.save()
+    // } else {
+    //   user = await User.create(document);
+    // }
     accountVerification(user);
 
     res.status(200).json({
