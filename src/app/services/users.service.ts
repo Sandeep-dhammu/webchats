@@ -7,7 +7,7 @@ import { User } from '../model/User.model';
   providedIn: 'root',
 })
 export class UsersService {
-  users = new GenericApi<User>('users', this._http);
+  private users = new GenericApi<User>('users', this._http);
   constructor(private _http: HttpClient) {}
 
   fetchList(query:any){

@@ -1,3 +1,4 @@
+import { async } from "rxjs";
 import User from "../models/User.js";
 
 export const search = async (req, res) => {
@@ -13,6 +14,11 @@ export const search = async (req, res) => {
         {phoneNo:  {$eq:+search || null, $ne:null}},
         {username: { $eq: search}}
       ];
+    }else{
+      return res.status(200).json({
+        docs: [],
+        totaldocs: 0
+      });
     }
 
     const users = await User.find(where).select("_id username profile");
@@ -57,3 +63,37 @@ export const getById = async (req, res) => {
     });
   }
 };
+
+export const update = async (req, res) =>{
+  try {
+    const { userId } = req; 
+
+    const user = await User.findById(userId);
+    if (!user) throw "User Doesn't Exist!";
+
+    const document = {
+      phoneNo:req.body.phoneNo,
+      profile:{
+          firstName:req.body.firstName,
+          middleName:req.body.middleName,
+          lastName:req.body.lastName,
+          imgUrl:req.body.imgUrl,
+          bio:req.body.bio
+      }
+    }
+
+    user.set(document)
+    await user.save()
+    return res.status(200).json({
+      status:"success",
+      message:"User Updated Successfully",
+      body:user
+    });
+    
+  } catch (err) {
+    return res.status(201).send({
+      status: "error",
+      message: err.message ?? err,
+    });  
+  }
+}
