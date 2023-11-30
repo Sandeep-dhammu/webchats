@@ -6,10 +6,29 @@
 
   <div class="flex-auto grid grid-cols-3 gap-5 bg-backdrop rounded-3xl py-6">
     <div class="col-span-1">
-      <users-list class="col-span-4"></users-list>
+      <div class="px-6">
+        <input
+          type="search"
+          class="block p-2 w-full z-20 text-sm text-gray-900 rounded-3xl border border-gray-100"
+          placeholder="username(case sensitive), phone number"
+          (input)="fetchUsers($event.target); fetchChats($event.target)"
+        />
+    </div>
+    <div class="overflow-y-scroll h-[70vh] max-h-[750px] mt-6 ">
+      <ng-container *ngFor="let chat of chatsList">
+        <div class="px-3 mx-3 cursor-pointer" (click)="createChat(chat?.opponentUsers?.[0]?.details?.userId)" >
+          <user [chat]="chat" ></user>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let user of usersList">
+        <div class="px-3 mx-3 cursor-pointer" (click)="createChat(user?._id)" >
+          <user [user]="user" ></user>
+        </div>
+      </ng-container>
+    </div>
     </div>
     <div class="col-span-2">
-      <Inbox class="col-span-8"></Inbox>
+      <inbox [chatDetails]="chatDetails" class="col-span-8"></inbox>
     </div>
   </div>
 

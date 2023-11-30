@@ -1,11 +1,28 @@
-<div class="bg-transparent shadow-sm rounded-md h-full">
-  <div class="pb-5">
-    <div class="flex items-center gap-3">
-      <img class="w-12 h-12 rounded-xl" src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg">
-      <div class="flex flex-col">
-        <div class="text-lg font-semibold ">Andrew Alfred</div>
-        <span class="text-slate-300 text-xs ">Last Seen 12:00PM</span>
+<ng-container  *ngIf="chatDetails?.opponentUsers">
+  <div class="flex flex-col">
+    <div class="pb-5 justify-between">
+      <div class="flex gap-3">
+        <img class="w-12 h-12 rounded-xl" [src]="chatDetails?.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
+        <div class="flex flex-col">
+          <div class="text-lg font-semibold ">
+            {{chatDetails?.opponentUsers?.[0]?.profile?.firstName}}
+            {{chatDetails?.opponentUsers?.[0]?.profile?.lastName}}
+          </div>
+          <span class="text-slate-300 text-xs ">{{chatDetails?.opponentUsers?.[0]?.details?.lastActive}}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="overflow-y-scroll h-[calc(70vh-65px)] max-h-[calc(750px-65px)]">
+      <div class="my-1">hello</div>
+    </div>
+    
+    <div class="pt-5">
+      <div class="flex items-center gap-4 pr-3">
+        <div><img width="20px" height="20px" src="../../../../../assets/images/attachment-w.svg" alt="" class="cursor-pointer"></div>
+        <div class="flex-1"><input placeholder="Text Message" class="block p-2 w-full z-20 text-sm text-gray-900 rounded-3xl border border-gray-100" type="text"></div>
+        <div><img width="20px" height="20px" src="../../../../../assets/images/mic-w.svg" alt="" class="cursor-pointer"></div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>

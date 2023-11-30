@@ -27,8 +27,9 @@ export class GenericApi<TModal> {
 
   create(url: string, body: Object): any {
     return new Promise((resolve, reject) => {
+      url = url ? `/${url}`:'' 
       try {
-        this.http.post<any>(`${this.apiUrl}/${url}` , body)?.subscribe({
+        this.http.post<any>(this.apiUrl + url , body)?.subscribe({
           next: (val) => {
             if(val.status  == "error") reject(val?.message ??  val)
             resolve(val)

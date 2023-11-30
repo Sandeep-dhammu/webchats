@@ -24,8 +24,9 @@ const ChatSchema = new mongoose.Schema({
     },
     imgUrl:String,
     unread:Number,
+    lastMessage:String,
     createdAt:Date,
-    lastMessage:String
+    updatedAt:{type:Date, default:Date.now()},
 })
 
 const Chat = mongoose.model("chat", ChatSchema);
