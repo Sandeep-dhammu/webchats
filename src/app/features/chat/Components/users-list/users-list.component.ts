@@ -28,10 +28,9 @@ export class UsersListComponent implements OnInit {
     let value;
     if (target) {
       value = target.value;
-      if (!value) return;
     }
     try {
-      let res = await this._chatsService.listng({ search: value });
+      let res = await this._chatsService.listng({ search: value ?? ''});
       this.chatsList = res.docs;
     } catch (err) {
       console.error(err);
