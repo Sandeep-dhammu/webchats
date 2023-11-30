@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chat } from 'src/app/model/Chat.model';
 import { User } from 'src/app/model/User.model';
 import { ChatsService } from 'src/app/services/chats.service';
+import { SocketIOService } from 'src/app/services/socketIO.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -19,11 +20,13 @@ export class ChatComponent implements OnInit {
   chatDetails?: Chat 
   constructor(
     private _usersService: UsersService,
-    private _chatsService: ChatsService
+    private _chatsService: ChatsService,
+    private _socketService: SocketIOService
   ) {}
 
   ngOnInit() {
     this.fetchChats();
+    this._socketService.connect()
   }
 
   async fetchChats(target?: any) {

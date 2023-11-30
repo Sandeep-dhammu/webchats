@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { GenericApi } from '../http-handler/generic-api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthsService {
   private auths = new GenericApi('auths', this._http);
-  constructor(private _http:HttpClient) {}
+  constructor(private _http:HttpClient, private socketIO:Socket) {}
   
   async signUp(body:Object){
     try {
