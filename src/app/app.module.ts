@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthenticationInterceptor } from './core/interceptors/authentication.interceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {autoConnect:false,reconnectionAttempts:1} };
+const config: SocketIoConfig = { url: 'http://localhost:2200', options: {autoConnect:true,reconnectionAttempts:1} };
 @NgModule({
   declarations: [AppComponent],
   imports: [

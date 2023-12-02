@@ -23,7 +23,7 @@ export const create = async (req, res) => {
       ,
     }
 
-    let chat = await getById(req, where);  
+    let chat = await getByConditon({userId:req.userId, where});  
 
     // let chat = await Chat.findOne({
     //   "users.userId": { $and: [user._id, req.userId] },
@@ -88,17 +88,17 @@ export const search = async (req, res, next) => {
     const where = {
       "users.userId": { $eq: req.userId },
     };
-    const whereInLookup = {$match:{}};
+    const lookupSearch = {$match:{}};
 
     if (search) {
-      whereInLookup["$match"] = { $or : [
+      lookupSearch["$match"] = { $or : [
         {"opponentUsersData.username": { $eq: search}},
         {"opponentUsersData.profile.firstName": { $regex: search, $options:"i"}},
         {"opponentUsersData.profile.lastName": { $regex: search, $options:"i"}}
       ]};
     }
 
-    let chats = await getById(req, where, whereInLookup );
+    let chats = await getByConditon({userId:req.userId, where, lookupSearch});
 
       return res.status(200).json({
         docs: chats,
@@ -113,12 +113,13 @@ export const search = async (req, res, next) => {
   }
 };
 
-const getById = async (req, where, whereInLookup={$match:{}}) => {
+export const getByConditon = async (query) => {
   try {
+  const {userId, where, lookupSearch={$match:{}}} = query
    return await Chat.aggregate([
       { $match: where },
       { $unwind: "$users" },
-      { $match: { "users.userId": { $ne: req.userId } } },
+      { $match: { "users.userId": { $ne: userId } } },
       // {
       //   $group: {
       //     _id: '$_id',
@@ -145,7 +146,7 @@ const getById = async (req, where, whereInLookup={$match:{}}) => {
           as: "opponentUsersData",
         },
       },
-      whereInLookup,
+      lookupSearch,
       {
         $project: {
           _id: 1,

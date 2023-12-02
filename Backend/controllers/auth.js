@@ -108,9 +108,7 @@ export const signIn = async (req, res) => {
     if (user.status === "active") {
       user._doc["x-access-token"] = session.token;
     }
-    delete user._doc._id;
     delete user._doc.password;
-    delete user._doc.verificationToken;
 
     res.status(200).json({
       status: "success",

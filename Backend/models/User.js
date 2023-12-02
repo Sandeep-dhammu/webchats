@@ -12,6 +12,11 @@ const UserSchema = new mongoose.Schema({
         enum:["pending", "active", "inactive", "deleted"],
         default:"pending"
     },
+    status:{
+        type:String,
+        enum:["pending", "active", "inactive", "deleted"],
+        default:"pending"
+    },
     
     profile:{
         firstName:String,
@@ -19,7 +24,11 @@ const UserSchema = new mongoose.Schema({
         lastName:String,
         imgUrl:String,
         bio:String
-    }
+    },
+    isNowActive:Boolean,
+    lastActive:Date,
+    createdAt:Date,
+    updatedAt:{type:Date, default:Date.now()},
 })
 
 
