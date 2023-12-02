@@ -6,6 +6,7 @@ const ChatSchema = new mongoose.Schema({
         isAdmin:Boolean,
         isActive:Boolean,
         lastActive:Date,
+        unreadMessage:{type:Number, default:0},
         status:{
             type:String,
             enum:["pending", "accepted", "rejected"],

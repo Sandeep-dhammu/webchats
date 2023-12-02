@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.fetchChats();
-    this._socketService.connect()
+    this._socketService.markOnline()
   }
 
   async fetchChats(target?: any) {
@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit {
       console.error(err);
     }
   }
+
   async fetchUsers(target: any) {
     let { value } = target;
     if (!value) return;
@@ -56,6 +57,9 @@ export class ChatComponent implements OnInit {
     try {
       let res = await this._chatsService.create({ userId });
       this.chatDetails = res.body
+      if(this.chatDetails){
+        this._socketService.join(this.chatDetails._id)
+      }
     } catch (err) {
       console.error(err);
     }
