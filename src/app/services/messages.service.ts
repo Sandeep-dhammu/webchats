@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { GenericApi } from '../http-handler/generic-api';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/User.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
-  private users = new GenericApi<User>('users', this._http);
+export class MessagesService {
+  private messages = new GenericApi('messages', this._http);
   constructor(private _http: HttpClient) {}
 
-  fetchList(query:any){
+  async list(query:Object){
     try {
-      return this.users.search(query)
+      return this.messages.search(query)
     } catch (err) {
       throw err
     }

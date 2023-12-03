@@ -1,28 +1,83 @@
-<ng-container  *ngIf="chatDetails?.opponentUsers">
-  <div class="flex flex-col">
+<ng-container *ngIf="chatDetails?.opponentUsers">
     <div class="pb-5 justify-between">
-      <div class="flex gap-3">
-        <img class="w-12 h-12 rounded-xl" [src]="chatDetails?.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
+      <div class="flex gap-3 px-6">
+        <img
+          class="w-12 h-12 rounded-xl"
+          [src]="chatDetails?.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'"
+        />
         <div class="flex flex-col">
-          <div class="text-lg font-semibold ">
+          <div class="text-lg font-semibold">
             {{chatDetails?.opponentUsers?.[0]?.profile?.firstName}}
             {{chatDetails?.opponentUsers?.[0]?.profile?.lastName}}
           </div>
-          <span class="text-slate-300 text-xs ">{{chatDetails?.opponentUsers?.[0]?.details?.lastActive}}</span>
+          <span
+            class="text-slate-300 text-xs"
+            >
+            {{chatDetails?.opponentUsers?.[0]?.isNowActive ? "Online" :chatDetails?.opponentUsers?.[0]?.lastActive}}</span
+          >
         </div>
       </div>
     </div>
-    
-    <div class="overflow-y-scroll h-[calc(70vh-65px)] max-h-[calc(750px-65px)]">
-      <div class="my-1">hello</div>
+
+    <div #scrollDiv id="inbox"
+      class="overflow-y-scroll h-[calc(100vh-75px)] max-h-[calc(635px-75px)] px-6"
+    >
+      <div
+        class="flex my-4 gap-3"
+        [ngClass]="
+          localUser._id == message?.userId ? 'flex-row-reverse' : 'flex-row'
+        "
+        *ngFor="let message of messagesList"
+      >
+        <div class="">
+          <img
+            class="w-10 h-10 rounded-lg"
+            src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+            alt="logo"
+          />
+        </div>
+        <div class="flex-1 ">
+          <div
+          [innerHTML]="message?.text"
+            class="text-sm py-2 px-4 shadow rounded-xl break-all w-fit"
+            [ngClass]="
+              localUser._id == message?.userId ? 'bg-[#6b8afd]' : 'bg-backdrop'
+            "
+          >
+            <!-- {{ message?.text }} -->
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="pt-5">
-      <div class="flex items-center gap-4 pr-3">
-        <div><img width="20px" height="20px" src="../../../../../assets/images/attachment-w.svg" alt="" class="cursor-pointer"></div>
-        <div class="flex-1"><input placeholder="Text Message" class="block p-2 w-full z-20 text-sm text-gray-900 rounded-3xl border border-gray-100" type="text"></div>
-        <div><img (click)="sendMessage()" width="20px" height="20px" src="../../../../../assets/images/mic-w.svg" alt="" class="cursor-pointer"></div>
-      </div> 
-    </div>
-  </div>
+
+    <form  class="pt-5" [formGroup]="form">
+      <div class="grid grid-cols-12 items-center gap-4 pr-3">
+        <div class="col-span-1">
+          <img
+            width="20px"
+            height="20px"
+            src="../../../../../assets/images/attachment-w.svg"
+            alt=""
+            class="cursor-pointer"
+          />
+        </div>
+        <div class="col-span-10" >
+          <form-field class="w-full">
+            <img src="../../../../../assets/images/emoji-w.svg" alt="" class="f-prefix w-5 h-5 cursor-pointer">
+            <angular-editor formControlName="text" placeholder="Your message" [config]="editorConfig" class="f-control angular-editor"></angular-editor>
+            <img src="../../../../../assets/images/send-w.svg" alt="" class="f-append w-5 h-5 cursor-pointer" (click)="sendMessage($event)">
+          </form-field>
+        </div>
+        <div class="col-span-1">
+          <img
+            width="20px"
+            height="20px"
+            src="../../../../../assets/images/mic-w.svg"
+            alt=""
+            class="cursor-pointer"
+          />
+        </div>
+      </div>
+    </form>
 </ng-container>
+

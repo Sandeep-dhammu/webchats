@@ -1,0 +1,72 @@
+.bg-backdrop {
+  background: rgba(95, 104, 122, 0.9);
+  -webkit-backdrop-filter: blur(48px);
+  backdrop-filter: blur(48px);
+  border: 1px solid rgba(46, 51, 61, 0.45);
+}
+
+::ng-deep {
+
+  .angular-editor-textarea {
+    border: none !important;
+    // display: flex;
+    padding: 0px !important;
+    margin: 0px !important;
+    resize: none !important;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+  .angular-editor-textarea::after {
+    content: none !important;
+  }
+  .angular-editor-placeholder {
+    color:#fff !important;
+    padding: 0px !important;
+  }
+  /* ckeditor-styles.css */
+
+/* Change font size and color for the editor content */
+.ck-content {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Remove borders from the editor */
+.ck.ck-editor {
+  border: none;
+}
+
+/* Customize toolbar background color */
+.ck-toolbar {
+  background-color: #f0f0f0;
+}
+
+/* Customize button styles in the toolbar */
+.ck-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: 1px solid #4caf50;
+}
+
+.ck-blurred.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline{
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+.ck-focused.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline{
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+.ck .ck-powered-by{
+display: none;
+}
+.ck.ck-editor__top.ck-reset_all{
+
+  display: none !important;
+}
+/* Additional styles as needed */
+
+}
+
+

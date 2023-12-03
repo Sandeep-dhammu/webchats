@@ -4,7 +4,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { User } from '../model/User.model';
+import { User } from '../models/User.model';
 
 export class GenericApi<TModal> {
   apiUrl: string;

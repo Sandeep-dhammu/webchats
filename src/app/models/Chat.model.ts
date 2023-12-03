@@ -1,7 +1,7 @@
 export class Chat {
     _id?:String;
-    users?:ChatUser[]
     opponentUsers?:OpponentUser[]
+    user?:OpponentUser
     status?:String
     type?:String;;
     imgUrl?:String;
@@ -11,16 +11,13 @@ export class Chat {
     chatName?:String
 }
 
-class ChatUser {
+class OpponentUser {
     userId?:String;
     isAdmin?:Boolean;
-    isActive?:Boolean;
+    isNowActive?:Boolean;
     lastActive?:Date;
     status?:String;
-}
-
-class OpponentUser {
-    details?:ChatUser
+    unreadMessage?:Number
     username?:String
     profile?:{
         firstName?:String;

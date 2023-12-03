@@ -6,11 +6,21 @@ import { UserProfileComponent } from './Components/user-profile/user-profile.com
 import { UserComponent } from './Components/users-list/user/user.component';
 import { UsersListComponent } from './Components/users-list/users-list.component';
 import { ChatRoutes } from './chat.routing';
+import { FormFieldsModule } from 'src/app/shared/form-fields/form-fields.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @NgModule({
   imports: [
     CommonModule,
-    ChatRoutes
+    ChatRoutes,
+    FormsModule,
+    ReactiveFormsModule,
+    FormFieldsModule,
+    AngularEditorModule,
+    CKEditorModule
   ],
   declarations: [
     ChatComponent,

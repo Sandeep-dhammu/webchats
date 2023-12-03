@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Chat } from 'src/app/model/Chat.model';
-import { User } from 'src/app/model/User.model';
+import { Chat } from 'src/app/models/Chat.model';
+import { User } from 'src/app/models/User.model';
 import { AuthsService } from 'src/app/services/auths.service';
 import { ChatsService } from 'src/app/services/chats.service';
 import { UsersService } from 'src/app/services/users.service';
