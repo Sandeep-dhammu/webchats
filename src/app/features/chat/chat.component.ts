@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Chat } from 'src/app/model/Chat.model';
-import { User } from 'src/app/model/User.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Chat } from 'src/app/models/Chat.model';
+import { User } from 'src/app/models/User.model';
 import { ChatsService } from 'src/app/services/chats.service';
 import { SocketIOService } from 'src/app/services/socketIO.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -21,12 +22,17 @@ export class ChatComponent implements OnInit {
   constructor(
     private _usersService: UsersService,
     private _chatsService: ChatsService,
-    private _socketService: SocketIOService
+    private _socketService: SocketIOService,
+    private _router:Router
   ) {}
 
   ngOnInit() {
     this.fetchChats();
     this._socketService.markOnline()
+    this._socketService.newMessage()?.subscribe(d => {
+      console.log("new Message");
+      this.fetchChats()
+    })
   }
 
   async fetchChats(target?: any) {
@@ -56,9 +62,13 @@ export class ChatComponent implements OnInit {
   async createChat(userId?: String) {
     try {
       let res = await this._chatsService.create({ userId });
-      this.chatDetails = res.body
-      if(this.chatDetails){
-        this._socketService.join(this.chatDetails._id)
+      if(this.chatDetails && res.body){
+        this._socketService.leftChat(this.chatDetails?._id)
+      }
+      if(res.body){
+        this.chatDetails = res.body;
+        this._socketService.join(this.chatDetails?._id)
+        // this._router.navigateByUrl("/chat/" +this.chatDetails?._id)
       }
     } catch (err) {
       console.error(err);

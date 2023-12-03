@@ -1,16 +1,23 @@
-<div *ngIf="chat" class="flex space-x-3 py-3">
-  <img *ngIf="chat?.type == 'dual'" class="w-12 h-12 rounded-xl" [src]="chat.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
-  <img *ngIf="chat?.type == 'group'" class="w-12 h-12 rounded-xl" [src]="chat.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
-  <div class="flex flex-col">
-    <div *ngIf="chat?.type == 'dual'" class=" text-md font-normal ">{{chat.opponentUsers?.[0]?.profile?.firstName}} {{chat.opponentUsers?.[0]?.profile?.lastName}}</div>
-    <div *ngIf="chat?.type == 'group'" class=" text-md font-normal ">{{chat.chatName}}</div>
-    <span class="text-[#6e7378] text-xs font-semibold">{{chat.lastMessage}}</span>
+<div *ngIf="chat" class="flex  py-3">
+  <div class="user flex-1 flex space-x-3" [attr.data-after-content]="chat.user?.unreadMessage">
+    <div class="relative " [class.profile]="chat.opponentUsers?.[0]?.isNowActive && chat.type == 'dual'">
+      <img *ngIf="chat?.type == 'dual'" class="w-12 h-12 rounded-xl " [src]="chat.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
+      <img *ngIf="chat?.type == 'group'" class="w-12 h-12 rounded-xl" [src]="chat.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
+    </div>
+    <div class="flex flex-col">
+      <div *ngIf="chat?.type == 'dual'" class="text-md font-normal">{{chat.opponentUsers?.[0]?.profile?.firstName}} {{chat.opponentUsers?.[0]?.profile?.lastName}}</div>
+      <div *ngIf="chat?.type == 'group'" class="text-md font-normal">{{chat.chatName}}</div>
+      <span class="text-[#6e7378] text-xs font-semibold" [innerHTML]="chat.lastMessage"></span>
+    </div>
+  </div>
+  <div>
+    
   </div>
 </div>
 <div *ngIf="user" class="flex items-center space-x-3 py-3">
   <img class="w-12 h-12 rounded-xl" [src]="user.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
   <div class="flex flex-col">
-    <div class=" text-md font-normal ">{{user.profile?.bio}} {{user.profile?.lastName}} {{user.username}}</div>  
-    <span class="text-[#6e7378] text-xs font-semibold">Hello</span>
+    <div class=" text-md font-normal ">{{user.profile?.firstName}} {{user.profile?.lastName}} </div>  
+    <span class="text-[#6e7378] text-xs font-semibold">{{user.username}}</span>
   </div>
 </div>

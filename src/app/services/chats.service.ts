@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GenericApi } from '../http-handler/generic-api';
 import { HttpClient } from '@angular/common/http';
-import { Chat } from '../model/Chat.model';
+import { Chat } from '../models/Chat.model';
 
 @Injectable({
   providedIn: 'root',

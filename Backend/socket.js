@@ -16,14 +16,13 @@ export const SocketInit = (app) => {
         let chat = null
         const online = async(userId) => {
             try {
-                console.log(userId);
                 connectedUsers[userId] = socket.id
                 let user = await User.findById(userId);
                 if( user ){
                     user.isNowActive = true 
                     await user.save();
-                    console.log(user);
                 }
+                console.log(connectedUsers);
             } catch (err) {
                 console.log(err);
             }
@@ -42,10 +41,10 @@ export const SocketInit = (app) => {
                 }
                 
                 connectedChatsUsers[chatId][userId] = socket.id;
-                // chat.set({"users.unreadMessage":0}).$where()
+                // Chat.updateOne({},)
+                await Chat.findOneAndUpdate({_id:chatId, "users.userId":user?._id}, {"users.$.unreadMessage":0})
+                // chat.set({"users.unreadMessage":0}).$where({"users.userId":{$eq:userId}})
                 // chat = chat.users.map(user => user.userId !== userId);
-                // await chat.save();
-
                 console.log({connectedUsers, connectedChatsUsers});
 
             } catch (err) {
@@ -64,6 +63,7 @@ export const SocketInit = (app) => {
                 };
 
                 const entity = await Message.create(document);
+                chat.lastMessage = entity.text
 
                 for (const opponent of chat.users) {
                     if(JSON.stringify(opponent.userId) !== userId){
@@ -83,12 +83,37 @@ export const SocketInit = (app) => {
                 console.log(err)
             }
         }
+        const left = async (data) => {
+            try {
+                const {chatId, userId} = data;
+                if(!chatId || !userId) throw "invalid data";
+                if(connectedChatsUsers[chatId]){
+                    delete connectedChatsUsers[chatId][userId];
+                    if(!Object.keys(connectedChatsUsers[chatId]).length){
+                        delete connectedChatsUsers[chatId]
+                    }
+                }
+                console.log({connectedUsers, connectedChatsUsers});
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        const disconnect = async (userId) => {
+            try {
+                if(!userId) throw "user id required";
+                if(connectedUsers[userId]){
+                    delete connectedUsers[userId];
+                }
+                console.log({connectedUsers, connectedChatsUsers});
+            } catch (err) {
+                console.error(err);
+            }
+        }
         socket.on("online", online);
         socket.on("join", join);
         socket.on("sendMessage", sendMessage);
-       
-        // socket.on("disconnect");
-
-    
+        socket.on("left", left);
+        socket.on("offline", disconnect);
+        // socket.on("disconnect", disconnect);
     })
 }

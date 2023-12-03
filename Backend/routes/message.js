@@ -1,10 +1,8 @@
 import { Router } from "express";
+import { search } from "../controllers/messages.js";
 
 const router = Router();
 
-router.post("", create);
 router.get("", search);
-router.put("/:id", remove);
-
 
 export default router
