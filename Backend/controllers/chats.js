@@ -154,7 +154,8 @@ export const getByConditon = async (query) => {
                 _id: 1,
                 username: 1,
                 profile: 1,
-                isNowActive:1
+                isNowActive:1,
+                lastActive:1
               },
             },
           ],
@@ -256,7 +257,7 @@ export const getByConditon = async (query) => {
           // },
         },
       },
-    ]);
+    ]).sort({"updatedAt":-1});
   } catch (err) {
     throw err;
     // return res.status(201).send({

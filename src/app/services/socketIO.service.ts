@@ -43,13 +43,7 @@ export class SocketIOService {
   }
 
   offline(){
-    console.log("offline");
-    
     this.socketIO?.emit("offline", this.user?._id)
-  }
-  disconnect(){
-    console.log("disconnect");
-    
-    this.socketIO?.disconnect(this.socketIO)
+    this.socketIO?.disconnect()
   }
 }

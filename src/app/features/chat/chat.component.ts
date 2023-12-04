@@ -11,8 +11,13 @@ import { UsersService } from 'src/app/services/users.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit {
-  @HostListener("window:beforeunload", ["$event"])
+export class ChatComponent implements OnInit, OnDestroy {
+  @HostListener("window:beforeunload")
+  unloadHandler(): void {
+    // setTimeout(() => {
+      this.disconnectSocket()
+    // }, 5000);
+  }
   search?: string = '';
   usersList?: User[];
   chatsList?: Chat[];
@@ -74,9 +79,15 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  beforeunloadHandler(event:any){
-    console.log(event);
-    
+  ngOnDestroy(): void {
+    // this.disconnectSocket()
+  }
+
+  disconnectSocket(){
+    if(this.chatDetails){
+      this._socketService.leftChat(this.chatDetails?._id)
+    }
+    this._socketService.offline()
   }
 
 }

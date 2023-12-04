@@ -7,14 +7,7 @@ import { SocketIOService } from './services/socketIO.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
   title = 'web chat';
-  constructor(private _socketService:SocketIOService){
-    
-  }
-  ngOnDestroy(): void {
-    console.log("disconnect");
-    
-    this._socketService.disconnect()
-  }
+  constructor(){}
 }

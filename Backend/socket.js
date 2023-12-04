@@ -3,7 +3,7 @@ import User from "./models/User.js"
 import Chat from "./models/Chat.js"
 import { getByConditon } from "./controllers/chats.js";
 import Message from "./models/Message.js";
-import mongoose from "mongoose";
+import mongoose, { disconnect } from "mongoose";
 const connectedUsers={};
 const connectedChatsUsers={};
 export const SocketInit = (app) => {
@@ -14,6 +14,7 @@ export const SocketInit = (app) => {
     })
     io.on("connection", (socket) => {
         let chat = null
+        console.log(`The Socket:${socket.id} is ${socket.connected ? 'connected':'not connected'}`)
         const online = async(userId) => {
             try {
                 connectedUsers[userId] = socket.id
@@ -22,9 +23,8 @@ export const SocketInit = (app) => {
                     user.isNowActive = true 
                     await user.save();
                 }
-                console.log(connectedUsers);
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
         const join = async(data = {}) => {
@@ -42,13 +42,12 @@ export const SocketInit = (app) => {
                 
                 connectedChatsUsers[chatId][userId] = socket.id;
                 // Chat.updateOne({},)
-                await Chat.findOneAndUpdate({_id:chatId, "users.userId":user?._id}, {"users.$.unreadMessage":0})
+                await Chat.findOneAndUpdate({_id:chatId, "users.userId":user?._id, "users.unreadMessage":{$ne:0}}, {"users.$.unreadMessage":0})
                 // chat.set({"users.unreadMessage":0}).$where({"users.userId":{$eq:userId}})
                 // chat = chat.users.map(user => user.userId !== userId);
-                console.log({connectedUsers, connectedChatsUsers});
 
             } catch (err) {
-                console.log(err)
+                console.error(err)
             }
         }
         const sendMessage = async (data = {}) =>{
@@ -80,7 +79,7 @@ export const SocketInit = (app) => {
 
                 await chat.save()
             } catch (err) {
-                console.log(err)
+                console.error(err)
             }
         }
         const left = async (data) => {
@@ -93,18 +92,24 @@ export const SocketInit = (app) => {
                         delete connectedChatsUsers[chatId]
                     }
                 }
-                console.log({connectedUsers, connectedChatsUsers});
             } catch (err) {
                 console.error(err);
             }
         }
-        const disconnect = async (userId) => {
+        const offline = async (userId) => {
             try {
                 if(!userId) throw "user id required";
                 if(connectedUsers[userId]){
                     delete connectedUsers[userId];
                 }
-                console.log({connectedUsers, connectedChatsUsers});
+                let user = await User.findById(userId);
+                if( user ){
+                    user.isNowActive = false 
+                    user.lastActive = Date.now() 
+                    user.save();
+                }
+                socket.disconnect()
+                console.log(`The Socket:${socket.id} is ${socket.disconnected ? 'disconnected':'still connected'}`)
             } catch (err) {
                 console.error(err);
             }
@@ -113,7 +118,6 @@ export const SocketInit = (app) => {
         socket.on("join", join);
         socket.on("sendMessage", sendMessage);
         socket.on("left", left);
-        socket.on("offline", disconnect);
-        // socket.on("disconnect", disconnect);
+        socket.on("offline", offline);
     })
 }
