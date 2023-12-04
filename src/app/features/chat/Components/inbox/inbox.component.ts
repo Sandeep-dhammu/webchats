@@ -17,6 +17,7 @@ import { MessagesService } from 'src/app/services/messages.service';
 import { SocketIOService } from 'src/app/services/socketIO.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { timeout } from 'rxjs';
+import * as moment from 'moment';
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
@@ -64,8 +65,15 @@ export class InboxComponent implements OnInit, OnChanges {
   }
   
   ngOnInit() {
+    if (this.chatDetails) {
+      let lastActive = this.chatDetails?.opponentUsers?.[0].lastActive;
+      console.log(lastActive);
+      
+      console.log(lastActive?.getTime )
+      console.log(lastActive?.getHours )
+      console.log(lastActive?.getDay )
+    }
     this._socketService.onMessage()?.subscribe((newMsg: Message) => {
-      console.log("newMsg");
       this.messagesList?.push(newMsg);
       this.scrollToBottom()
     });
@@ -73,6 +81,22 @@ export class InboxComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chatDetails) {
+      if(this.chatDetails?.opponentUsers?.[0].lastActive as any){
+      let lastActive = moment(this.chatDetails?.opponentUsers?.[0].lastActive as any)
+        const duration = moment.duration(moment().diff(lastActive))
+        if(duration.asSeconds() <= 60){
+          this.chatDetails.opponentUsers![0].lastActive = 'Just Now' as any
+        }else if (duration.asMinutes() <= 60){
+          let min = duration.asMinutes().toFixed(0)
+          min = (min.length > 1 ? min : "0" + min) + " Minutes ago";   
+          this.chatDetails.opponentUsers![0].lastActive = min as any 
+        }else if (duration.asHours() <=24 ) {
+          let min = duration.asMinutes().toFixed(0)
+          min = min.length > 1 ? min : "0" + min;   
+          let hr = `Last seen at ${duration.asHours().toFixed(0)}:${min}`
+          this.chatDetails.opponentUsers![0].lastActive = hr as any
+        }
+      }
       this.form.get('chatId')?.setValue(this.chatDetails._id);
       this.fetch();
     }
@@ -95,7 +119,6 @@ export class InboxComponent implements OnInit, OnChanges {
         chatId: this.chatDetails?._id,
       });
       this.messagesList = res?.body;
-      console.log(this.chatScroll);
       
       // this.scrollToBottom()
       this.scrollBottom()

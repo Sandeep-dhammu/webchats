@@ -10,10 +10,7 @@
             {{chatDetails?.opponentUsers?.[0]?.profile?.firstName}}
             {{chatDetails?.opponentUsers?.[0]?.profile?.lastName}}
           </div>
-          <span
-            class="text-slate-300 text-xs"
-            >
-            {{chatDetails?.opponentUsers?.[0]?.isNowActive ? "Online" :chatDetails?.opponentUsers?.[0]?.lastActive}}</span
+          <span class="text-slate-300 text-xs">{{chatDetails?.opponentUsers?.[0]?.isNowActive ? "Online" : chatDetails?.opponentUsers?.[0]?.lastActive}}</span
           >
         </div>
       </div>
@@ -36,7 +33,10 @@
             alt="logo"
           />
         </div>
-        <div class="flex-1 ">
+        <div class="flex-1 flex"
+        [ngClass]="
+        localUser._id == message?.userId ? 'justify-end' : 'justify-start'"
+        >
           <div
           [innerHTML]="message?.text"
             class="text-sm py-2 px-4 shadow rounded-xl break-all w-fit"
