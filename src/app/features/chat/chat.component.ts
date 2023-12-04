@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chat } from 'src/app/models/Chat.model';
 import { User } from 'src/app/models/User.model';
@@ -12,9 +12,8 @@ import { UsersService } from 'src/app/services/users.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-
+  @HostListener("window:beforeunload", ["$event"])
   search?: string = '';
-
   usersList?: User[];
   chatsList?: Chat[];
 
@@ -73,6 +72,11 @@ export class ChatComponent implements OnInit {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  beforeunloadHandler(event:any){
+    console.log(event);
+    
   }
 
 }

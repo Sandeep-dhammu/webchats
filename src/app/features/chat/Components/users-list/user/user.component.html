@@ -1,14 +1,17 @@
-<div *ngIf="chat" class="flex  py-3">
-  <div class="user flex-1 flex space-x-3" [attr.data-after-content]="chat.user?.unreadMessage">
-    <div class="relative " [class.profile]="chat.opponentUsers?.[0]?.isNowActive && chat.type == 'dual'">
+<div *ngIf="chat" class="  py-3">
+  <div class="flex items-center space-x-3" >
+    <div class="relative " [class.online]="chat.opponentUsers?.[0]?.isNowActive && chat.type == 'dual'">
       <img *ngIf="chat?.type == 'dual'" class="w-12 h-12 rounded-xl " [src]="chat.opponentUsers?.[0]?.profile?.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
       <img *ngIf="chat?.type == 'group'" class="w-12 h-12 rounded-xl" [src]="chat.imgUrl ?? 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'">
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-1 flex-col">
       <div *ngIf="chat?.type == 'dual'" class="text-md font-normal">{{chat.opponentUsers?.[0]?.profile?.firstName}} {{chat.opponentUsers?.[0]?.profile?.lastName}}</div>
       <div *ngIf="chat?.type == 'group'" class="text-md font-normal">{{chat.chatName}}</div>
-      <span class="text-[#6e7378] text-xs font-semibold" [innerHTML]="chat.lastMessage"></span>
+      <span class="text-[#6e7378] text-xs font-semibold break-all" [innerHTML]="chat.lastMessage?.slice(0,50) ?? '<div>Start Conversation!</div>'"></span>
     </div>
+    <!-- <div class=" flex items-center justify-center mx-3"> -->
+      <div class="count">{{chat.user?.unreadMessage}}</div>
+    <!-- </div> -->
   </div>
   <div>
     
