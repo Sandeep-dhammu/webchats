@@ -1,15 +1,15 @@
 <div class="flex justify-center">
-  <div class="w-full bg-white rounded-xl shadow  md:mt-0 sm:max-w-md xl:p-0 ">
+  <div class="w-full bg-backdrop rounded-xl shadow  md:mt-0 sm:max-w-md xl:p-0 ">
     <div  class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <div class="flex flex-col justify-center items-center space-y-3">
           <ng-container *ngIf="!isEmailVerified">
             <div class="loading-overlay"><div class="loading-spinner"></div></div>
-            <div class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center">Please Wait</div>
+            <div class="text-xl font-bold leading-tight tracking-tight   md:text-2xl text-center">Please Wait</div>
             <div class="text-sm mt-2 font-normal text-center">Verifying your email address. Please do not close this window</div>
           </ng-container>
           <ng-container *ngIf="isEmailVerified">
             <div><img width="120px" height="120px" src="assets/images/party-popper.png" alt=""></div>
-            <div class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-center pt-2">Email Confirmed!</div>
+            <div class="text-xl font-bold leading-tight tracking-tight   md:text-2xl text-center pt-2">Email Confirmed!</div>
             <div class="text-sm mt-2 font-normal text-center">Your email address has been successfully confirmed. Welcome to Web Chat!</div>
           </ng-container>
           <div>

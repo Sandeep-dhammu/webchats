@@ -24,9 +24,9 @@ const MessageSchema = new mongoose.Schema({
         enum:["pending", "sent", "seen", "deleted"],
         default:"pending"
     },
-    createdAt:Date,
-    updatedAt:{type:Date, default:Date.now}
-});
+    // createdAt:Date,
+    // updatedAt:{type:Date, default:Date.now}
+}, {timestamps:true});
 
 const Message = mongoose.model("message", MessageSchema);
 
