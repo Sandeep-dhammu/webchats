@@ -42,7 +42,7 @@ export const SocketInit = (app) => {
                 
                 connectedChatsUsers[chatId][userId] = socket.id;
                 // Chat.updateOne({},)
-                await Chat.findOneAndUpdate({_id:chatId, "users.userId":user?._id, "users.unreadMessage":{$ne:0}}, {"users.$.unreadMessage":0})
+               const change =  await Chat.updateOne({$and:[{_id:chatId}, {"users.userId":user?._id}, {"users.unreadMessage":{$gt:0}}]}, {"users.$.unreadMessage":0})
                 // chat.set({"users.unreadMessage":0}).$where({"users.userId":{$eq:userId}})
                 // chat = chat.users.map(user => user.userId !== userId);
 
@@ -65,16 +65,23 @@ export const SocketInit = (app) => {
                 chat.lastMessage = entity.text
 
                 for (const opponent of chat.users) {
-                    if(JSON.stringify(opponent.userId) !== userId){
-                        if(connectedChatsUsers[chatId][opponent?.userId]){
+                    if(connectedChatsUsers[chatId][opponent?.userId]){
+                            entity.status = "sent"
+                        if(opponent.userId != userId){
+                            entity.status = "seen"
+                        }
+                            await entity.save();
                             io.to(connectedChatsUsers[chatId][opponent?.userId]).emit("onMessageSent", entity);
                         }else if(connectedUsers[opponent?.userId]){
+                            entity.status = "sent"
+                            await entity.save()
                             io.to(connectedUsers[opponent?.userId]).emit("newMessage");
                             opponent.unreadMessage++
                         }else{
+                            entity.status = "sent"
+                            entity.save()
                             opponent.unreadMessage++
                         }
-                    }
                 }
 
                 await chat.save()

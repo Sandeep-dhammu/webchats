@@ -20,10 +20,8 @@
       class="overflow-y-scroll h-[calc(100vh-75px)] max-h-[calc(635px-75px)] px-6"
     >
       <div
-        class="flex my-4 gap-3"
-        [ngClass]="
-          localUser._id == message?.userId ? 'flex-row-reverse' : 'flex-row'
-        "
+        class="flex my-4 gap-3 items-center" 
+        [ngClass]="localUser._id == message?.userId ? 'flex-row-reverse' : 'flex-row'"
         *ngFor="let message of messagesList"
       >
         <div class="">
@@ -33,19 +31,13 @@
             alt="logo"
           />
         </div>
-        <div class="flex-1 flex"
-        [ngClass]="
-        localUser._id == message?.userId ? 'justify-end' : 'justify-start'"
-        >
-          <div
-          [innerHTML]="message?.text"
-            class="text-sm py-2 px-4 shadow rounded-xl break-all w-fit"
-            [ngClass]="
-              localUser._id == message?.userId ? 'bg-[#6b8afd]' : 'bg-backdrop'
-            "
-          >
-            <!-- {{ message?.text }} -->
-          </div>
+        <div class="flex-1 flex" [ngClass]="localUser._id == message?.userId ? 'justify-end' : 'justify-start'">
+        <div class="shadow rounded-xl p-2 items-end" [ngClass]="localUser._id == message?.userId ? 'bg-[#6b8afd] flex' : 'bg-backdrop'">
+          <div [innerHTML]="message?.text" class="text-sm pr-2 break-all w-fit"></div>
+          <!-- <div class="text-sm py-2 px-4  break-all w-fit"></div> -->
+          <img *ngIf="localUser._id == message?.userId && message.status == 'sent'" width="16px" height="16px" src="../../../../../assets/images/eye-off-w.svg" alt="">
+          <img *ngIf="localUser._id == message?.userId && message.status == 'seen'" width="16px" height="16px" src="../../../../../assets/images/eye-w.svg" alt="">
+        </div>
         </div>
       </div>
     </div>
@@ -63,9 +55,9 @@
         </div>
         <div class="col-span-10" >
           <form-field class="w-full">
-            <img src="../../../../../assets/images/emoji-w.svg" alt="" class="f-prefix w-5 h-5 cursor-pointer">
+            <img src="../../../../../assets/images/emoji-w.svg" alt="" class="f-prefix w-6 h-6 cursor-pointer">
             <angular-editor formControlName="text" placeholder="Your message" [config]="editorConfig" class="f-control angular-editor"></angular-editor>
-            <img src="../../../../../assets/images/send-w.svg" alt="" class="f-append w-5 h-5 cursor-pointer" (click)="sendMessage($event)">
+            <img src="../../../../../assets/images/send-w.svg" alt="" class="f-append w-6 h-6 cursor-pointer" (click)="sendMessage($event)">
           </form-field>
         </div>
         <div class="col-span-1">

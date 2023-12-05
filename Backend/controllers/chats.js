@@ -89,6 +89,7 @@ export const search = async (req, res, next) => {
     const lookupSearch = { $match: {} };
 
     if (search) {
+      where["users.userId"] = { $ne: req.userId }
       lookupSearch["$match"] = {
         $or: [
           { "opponentUsersData.username": { $eq: search } },
@@ -114,6 +115,7 @@ export const search = async (req, res, next) => {
       lookupSearch,
     });
 
+
     return res.status(200).json({
       docs: chats,
       totaldocs: chats.length,
@@ -135,36 +137,36 @@ export const getByConditon = async (query) => {
       { $unwind: "$users" },
       // { $match: { "users.userId": { $ne: userId } } },
       // {
-      //   $group: {
-      //     _id: '$_id',
-      //     opponentUsers: { $addToSet: '$users.userId' },
-      //     // other fields you may want to include
-      //   },
-      // },
-      {
-        $lookup: {
-          from: "users",
-          let: { userId: "$users.userId" },
-          pipeline: [
-            {
-              $match: { $expr: { $eq: ["$_id", "$$userId"] } },
+        //   $group: {
+          //     _id: '$_id',
+          //     opponentUsers: { $addToSet: '$users.userId' },
+          //     // other fields you may want to include
+          //   },
+          // },
+          {
+            $lookup: {
+              from: "users",
+              let: { userId: "$users.userId" },
+              pipeline: [
+                {
+                  $match: { $expr: { $eq: ["$_id", "$$userId"] } },
+                },
+                {
+                  $project: {
+                    _id: 1,
+                    username: 1,
+                    profile: 1,
+                    isNowActive:1,
+                    lastActive:1
+                  },
+                },
+              ],
+              as: "opponentUsersData",
             },
-            {
-              $project: {
-                _id: 1,
-                username: 1,
-                profile: 1,
-                isNowActive:1,
-                lastActive:1
-              },
-            },
-          ],
-          as: "opponentUsersData",
-        },
-      },
-      lookupSearch,
-      {
-        $unwind: "$opponentUsersData",
+          },
+          lookupSearch,
+          {
+            $unwind: "$opponentUsersData",
       },
       {
         $group: {
@@ -196,6 +198,7 @@ export const getByConditon = async (query) => {
           imgUrl: { $first: "$imgUrl" },
           unread: { $first: "$unread" },
           createdAt: { $first: "$createdAt" },
+          updatedAt:{ $first: "$updatedAt" },
           lastMessage: { $first: "$lastMessage" },
           // "opponentUsersData":{$push:"$opponentUsersData"},
           // "users":{$push:"$users"}
@@ -205,69 +208,71 @@ export const getByConditon = async (query) => {
         $project: {
           _id: 1,
           // me: {
-          //   $filter: {
-          //     input: "$user",
-          //     as: "user",
-          //     cond: { $ne: ["$$user", null] },
-          //   },
-          // },
-          user: {
-            $arrayElemAt: [
-              {
+            //   $filter: {
+              //     input: "$user",
+              //     as: "user",
+              //     cond: { $ne: ["$$user", null] },
+              //   },
+              // },
+              user: {
+                $arrayElemAt: [
+                  {
+                    $filter: {
+                      input: "$user",
+                      as: "user",
+                      cond: { $ne: ["$$user", null] },
+                    },
+                  },
+                  0,
+                ],
+              },
+              opponentUsers: {
                 $filter: {
-                  input: "$user",
+                  input: "$opponentUsers",
                   as: "user",
                   cond: { $ne: ["$$user", null] },
                 },
               },
-              0,
-            ],
-          },
-          opponentUsers: {
-            $filter: {
-              input: "$opponentUsers",
-              as: "user",
-              cond: { $ne: ["$$user", null] },
-            },
-          },
-          status: 1,
-          type: 1,
-          imgUrl: 1,
-          unread: 1,
-          createdAt: 1,
-          lastMessage: 1,
-          // opponentUsers:1
-          // opponents: {
-          //   $map: {
-          //     input: "$opponentUsers",
-          //     as: "userData",
-          //     in: {
-          //       $mergeObjects: [
-          //         {
-          //           $cond: {
-          //             if: { $eq: ["$$userData._id", "$users.userId"] },
-          //             then: "$$userData",
-          //             else: null,
-          //           },
-          //         },
-          //         { details: "$users" },
-          //       ],
-          //     },
-          //   },
-          // },
-        },
+              status: 1,
+              type: 1,
+              imgUrl: 1,
+              unread: 1,
+              createdAt: 1,
+              updatedAt:1,
+              lastMessage: 1,
+              // opponentUsers:1
+              // opponents: {
+                //   $map: {
+                  //     input: "$opponentUsers",
+                  //     as: "userData",
+                  //     in: {
+                    //       $mergeObjects: [
+                      //         {
+                        //           $cond: {
+                          //             if: { $eq: ["$$userData._id", "$users.userId"] },
+                          //             then: "$$userData",
+                          //             else: null,
+                          //           },
+                          //         },
+                          //         { details: "$users" },
+                          //       ],
+                          //     },
+                          //   },
+                          // },
+                        },
       },
-    ]).sort({"updatedAt":-1});
+      { $sort : { updatedAt : -1 } },
+    ])
   } catch (err) {
     throw err;
     // return res.status(201).send({
-    //   status: "error",
-    //   message: err.message ?? err,
-    // });
-  }
-};
-
-export const remove = async (req, res) => {
+      //   status: "error",
+      //   message: err.message ?? err,
+      // });
+    }
+  };
+  
+  export const remove = async (req, res) => {
   try {
   } catch (err) {
     return res.status(201).send({
