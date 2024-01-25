@@ -1,5 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { firstValueFrom } from 'rxjs';
 import { Chat } from 'src/app/models/Chat.model';
 import { User } from 'src/app/models/User.model';
 import { ChatsService } from 'src/app/services/chats.service';
@@ -27,7 +29,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     private _usersService: UsersService,
     private _chatsService: ChatsService,
     private _socketService: SocketIOService,
-    private _router:Router
+    private _router:Router,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit() {
@@ -47,8 +50,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     try {
       let res = await this._chatsService.listng({ search: value ?? ''});
       this.chatsList = res.docs;
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 
@@ -58,14 +62,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     try {
       let res = await this._usersService.fetchList({ search: value });
       this.usersList = res.docs;
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 
   async createChat(userId?: String) {
     try {
-      let res = await this._chatsService.create({ userId });
+      let res = await firstValueFrom<any>(this._chatsService.create({ userId }));
       if(this.chatDetails && res.body){
         this._socketService.leftChat(this.chatDetails?._id)
       }
@@ -74,8 +79,9 @@ export class ChatComponent implements OnInit, OnDestroy {
         this._socketService.join(this.chatDetails?._id)
         // this._router.navigateByUrl("/chat/" +this.chatDetails?._id)
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 

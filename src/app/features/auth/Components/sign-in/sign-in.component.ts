@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { AuthsService } from 'src/app/services/auths.service';
 
@@ -19,7 +20,7 @@ export class SignInComponent implements OnInit {
     haveToRemember: new FormControl(false),
   });
 
-  constructor(private _authsService: AuthsService, private router:Router) {}
+  constructor(private _authsService: AuthsService, private router:Router, private toastr:ToastrService) {}
 
   ngOnInit() {}
 
@@ -28,8 +29,9 @@ export class SignInComponent implements OnInit {
       if (this.form.invalid) return this.form.markAllAsTouched();
       await this._authsService.signIn(this.form.value);
       this.router.navigateByUrl("/chat")
-    } catch (err) {
+    }  catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 }

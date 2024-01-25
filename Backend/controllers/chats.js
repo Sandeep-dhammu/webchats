@@ -72,7 +72,7 @@ export const create = async (req, res) => {
       body: responseBody,
     });
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });
@@ -121,7 +121,7 @@ export const search = async (req, res, next) => {
       totaldocs: chats.length,
     });
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });
@@ -265,7 +265,7 @@ export const getByConditon = async (query) => {
     ])
   } catch (err) {
     throw err;
-    // return res.status(201).send({
+    // return res.status(400).send({
       //   status: "error",
       //   message: err.message ?? err,
       // });
@@ -275,7 +275,7 @@ export const getByConditon = async (query) => {
   export const remove = async (req, res) => {
   try {
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });

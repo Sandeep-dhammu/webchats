@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ValidatorsService } from 'src/app/core/services/validators.service';
 import { AuthsService } from 'src/app/services/auths.service';
 
@@ -33,7 +34,7 @@ export class SignUpComponent implements OnInit {
       validators: [ValidatorsService.compare('password', 'cPassword')],
     }
   );
-  constructor(private _authService: AuthsService, private router: Router) {}
+  constructor(private _authService: AuthsService, private router: Router, private toastr:ToastrService) {}
 
   ngOnInit() {}
 
@@ -44,8 +45,9 @@ export class SignUpComponent implements OnInit {
       }
       let user = (await this._authService.signUp(this.form.value)) as any;
       this.router.navigateByUrl('/auth/email-sent');
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 }

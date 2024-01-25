@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { GenericApi } from '../http-handler/generic-api';
 import { HttpClient } from '@angular/common/http';
-import { Chat } from '../models/Chat.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatsService {
-  private chats = new GenericApi<any>('chats', this._http);
+  private chats = new GenericApi<any>('chats');
 
   constructor(private _http:HttpClient) {}
 

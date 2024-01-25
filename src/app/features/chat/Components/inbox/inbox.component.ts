@@ -18,6 +18,7 @@ import { SocketIOService } from 'src/app/services/socketIO.service';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { timeout } from 'rxjs';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 @Component({
@@ -60,18 +61,19 @@ export class InboxComponent implements OnInit, OnChanges {
   
   constructor(
     private _socketService: SocketIOService,
-    private _messagesService: MessagesService
+    private _messagesService: MessagesService,
+    private toastr:ToastrService
   ) {
   }
   
   ngOnInit() {
     if (this.chatDetails) {
       let lastActive = this.chatDetails?.opponentUsers?.[0].lastActive;
-      console.log(lastActive);
+      // console.log(lastActive);
       
-      console.log(lastActive?.getTime )
-      console.log(lastActive?.getHours )
-      console.log(lastActive?.getDay )
+      // console.log(lastActive?.getTime )
+      // console.log(lastActive?.getHours )
+      // console.log(lastActive?.getDay )
     }
     this._socketService.onMessage()?.subscribe((newMsg: Message) => {
       this.messagesList?.push(newMsg);
@@ -122,8 +124,9 @@ export class InboxComponent implements OnInit, OnChanges {
       
       // this.scrollToBottom()
       this.scrollBottom()
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 

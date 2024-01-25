@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class MessagesService {
-  private messages = new GenericApi('messages', this._http);
+  private messages = new GenericApi('messages');
   constructor(private _http: HttpClient) {}
 
   async list(query:Object){

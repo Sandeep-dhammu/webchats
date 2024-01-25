@@ -1,48 +1,29 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-} from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { User } from '../models/User.model';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { catchError, firstValueFrom, map, pipe, tap, throwError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { inject } from '@angular/core';
 
 export class GenericApi<TModal> {
-  apiUrl: string;
-  constructor(key: string, private http: HttpClient) {
-    this.apiUrl = 'http://localhost:2200/api/' + key;
+  private http: HttpClient;
+  private apiUrl: string;
+  private toastr?: ToastrService;
+
+  constructor(url: string) {
+    this.http = inject(HttpClient);
+    this.toastr = inject(ToastrService);
+    this.apiUrl = 'http://localhost:2200/api/' + url;
   }
 
   search(query: any): any {
-    return new Promise((resolve, reject) => {
-      try {      
-        this.http.get<TModal>(this.apiUrl, {params:query})?.subscribe({
-          next: (val) => resolve(val),
-          error: (err) => this.handleError(err),
-        });
-      } catch (err) {
-        reject(err);
-      } 
-    });
+    return firstValueFrom(this.http.get<TModal>(this.apiUrl, query)).catch(this.handleError);
   }
 
-  create(url: string, body: Object): any {
-    return new Promise((resolve, reject) => {
-      url = url ? `/${url}`:'' 
-      try {
-        this.http.post<any>(this.apiUrl + url , body)?.subscribe({
-          next: (val) => {
-            if(val.status  == "error") reject(val?.message ??  val)
-            resolve(val)
-          },
-          error: (err) => this.handleError(err),
-        });
-      } catch (err) {
-        reject(err);
-      } 
-    });
+   create(url: string, body: Object): any {
+    url = url ? `/${url}` : '';
+    return firstValueFrom(this.http.post(this.apiUrl + url, body)).catch(this.handleError);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    return throwError(() => error.message);
+  private handleError({error}:HttpErrorResponse) {
+    throw error?.message ?? error ?? "Somthing went wrong!"
   }
 }

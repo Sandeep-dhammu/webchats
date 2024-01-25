@@ -28,7 +28,7 @@ export const search = async (req, res) => {
       totaldocs: users.length
     });
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });
@@ -57,7 +57,7 @@ export const getById = async (req, res) => {
       totaldocs: users.length
     });
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });
@@ -91,7 +91,7 @@ export const update = async (req, res) =>{
     });
     
   } catch (err) {
-    return res.status(201).send({
+    return res.status(400).send({
       status: "error",
       message: err.message ?? err,
     });  

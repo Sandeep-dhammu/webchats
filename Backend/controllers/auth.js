@@ -60,7 +60,7 @@ export const signUp = async (req, res) => {
       body: { _id: user._id },
     });
   } catch (err) {
-    return res.status(201).json({
+    return res.status(400).err({
       status: "error",
       message: err.message || err || "Something went wrong",
     });
@@ -87,11 +87,11 @@ export const signIn = async (req, res) => {
         },
       ],
     }).select("-verificationToken");
-    if (!user) throw "User doesn't exist with this email!";
+    if (!user) throw "Invalid Username/email or password!";
     if (user.status == "inactive")
       throw "Your Account is inactive. Contact with Helpline to resolve the issue!";
     if (!bcrypt.compareSync(req.body.password, user.password))
-      throw "Email or Password is incorrect!";
+      throw "Email/Username or Password is incorrect!";
 
     let session = await Session.findOne({
       userId: { $eq: user._id },
@@ -116,7 +116,7 @@ export const signIn = async (req, res) => {
       body: user,
     });
   } catch (err) {
-    return res.status(201).json({
+    return res.status(400).json({
       status: "error",
       message: err.message || err || "Something went wrong",
     });
@@ -154,7 +154,7 @@ export const verify = async (req, res) => {
       message: "User verified successfully!",
     });
   } catch (err) {
-    return res.status(201).json({
+    return res.status(400).json({
       status: "error",
       message: err.message || err || "Something went wrong",
     });
@@ -190,7 +190,7 @@ export const forgotPassword = async (req, res) => {
       body: user,
     });
   } catch (err) {
-    return res.status(201).json({
+    return res.status(400).json({
       status: "error",
       message: err.message || err || "Something went wrong",
     });
@@ -225,7 +225,7 @@ export const resetPassword = async (req, res) => {
       body: user,
     });
   } catch (err) {
-    return res.status(201).json({
+    return res.status(400).json({
       status: "error",
       message: err.message || err || "Something went wrong",
     });

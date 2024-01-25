@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthsService } from 'src/app/services/auths.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class EmailConfirmationComponent implements OnInit {
   isEmailVerified:boolean = false
   userToken?:string
 
-  constructor(private _activatedRoute:ActivatedRoute, private _authsService:AuthsService,private router:Router) {
+  constructor(private _activatedRoute:ActivatedRoute, private _authsService:AuthsService,private router:Router, private toastr:ToastrService) {
     this.userToken = _activatedRoute.snapshot.queryParams["token"];
    }
 
@@ -32,8 +33,9 @@ export class EmailConfirmationComponent implements OnInit {
       setTimeout(() => {
         this.router.navigateByUrl("/auth/sign-in")
       }, 2000);
-    } catch (err) {
+    } catch (err:any) {
       console.error(err);
+      this.toastr.error(err)
     }
   }
 

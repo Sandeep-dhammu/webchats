@@ -8,7 +8,7 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root',
 })
 export class AuthsService {
-  private auths = new GenericApi('auths', this._http);
+  private auths = new GenericApi('auths');
   constructor(private _http:HttpClient, private socketIO:Socket) {}
   
   async signUp(body:Object){

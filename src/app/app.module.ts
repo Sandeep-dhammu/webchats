@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthenticationInterceptor } from './core/interceptors/authentication.interceptor';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:2200', options: {autoConnect:true,reconnectionAttempts:1} };
@@ -15,8 +17,9 @@ const config: SocketIoConfig = { url: 'http://localhost:2200', options: {autoCon
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SocketIoModule.forRoot(config),
-    
+    ToastrModule.forRoot(), 
   ],
   providers: [
     {

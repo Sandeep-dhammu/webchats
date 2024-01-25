@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChatComponent } from './chat.component';
 import { InboxComponent } from './Components/inbox/inbox.component';
 import { UserProfileComponent } from './Components/user-profile/user-profile.component';
-import { UserComponent } from './Components/users-list/user/user.component';
-import { UsersListComponent } from './Components/users-list/users-list.component';
+import { UserComponent } from './Components/user/user.component';
 import { ChatRoutes } from './chat.routing';
 import { FormFieldsModule } from 'src/app/shared/form-fields/form-fields.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +23,6 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
   ],
   declarations: [
     ChatComponent,
-    UsersListComponent,
     InboxComponent,
     UserComponent,
     UserProfileComponent

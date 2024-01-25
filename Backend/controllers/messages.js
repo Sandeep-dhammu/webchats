@@ -48,7 +48,7 @@ export const search = async(req, res) => {
        });
        
     } catch (err) {
-        res.status(201).send({
+        res.status(400).send({
          status:"error",
          message:"",
          body:err?.message ??  err
